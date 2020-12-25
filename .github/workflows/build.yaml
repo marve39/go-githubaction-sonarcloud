@@ -1,4 +1,4 @@
-name: masterBranchFlow
+name: build
 on:
   push:
     branches:
