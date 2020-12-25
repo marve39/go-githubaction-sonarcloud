@@ -26,7 +26,7 @@ jobs:
       - name: golangci-lint
         uses: golangci/golangci-lint-action@v2
         with:
-          version: 1.33.0
+          version: v1.33.0
       - run: make test
       - name: Archive code coverage results
         uses: actions/upload-artifact@v2
