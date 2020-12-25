@@ -12,7 +12,6 @@ func main() {
 	if err != nil {
 		log.Fatal("ListenAndServe: ", err)
 	}
-
 }
 
 //HelloworldHandler HelloWorld net/http handler

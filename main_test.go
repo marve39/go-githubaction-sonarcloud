@@ -32,6 +32,6 @@ func TestHelloworldHandler(t *testing.T) {
 
 //TestMain Test main function
 func TestMain(t *testing.T) {
-	go main()
+	main()
 	log.Printf("Tested")
 }
