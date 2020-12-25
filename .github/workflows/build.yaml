@@ -1,0 +1,35 @@
+name: build
+on:
+  push:
+    branches:
+      - master
+    paths-ignore:
+      - '**.md'
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths-ignore:
+      - '**.md'
+jobs:
+  code-scanner: 
+    name: Compile and Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+      - name: Setup go
+        uses: actions/setup-go@v2
+        with:
+          go-version: '^1.15.6' 
+      - name: Lint Test
+        uses: golangci/golangci-lint-action@v2
+        with:
+          version: v1.33.0
+      - name: Whitebox Test
+        run: make test
+      - name: Analyze with SonarCloud
+        uses: sonarsource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
