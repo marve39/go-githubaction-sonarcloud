@@ -1,4 +1,4 @@
-name: build-test
+name: masterBranchFlow
 on:
   push:
     branches:
@@ -9,29 +9,58 @@ on:
     types: [opened, synchronize, reopened]
     paths-ignore:
       - '**.md'
+      
 jobs:
-  codeScanner:
-    name: codeScanner
+  build: 
+    name: Compile and Test
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v2
         with:
           fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
-      - name: Setup GO lang
+      - name: Setup go
         uses: actions/setup-go@v2
         with:
           go-version: '^1.15.6' 
-      - name: golangci-lint
-        uses: golangci/golangci-lint-action@v2
-        with:
-          version: v1.33.0
-      - name: Lint Test 
-        run: golangci-lint run ./ --verbose --no-config --out-format checkstyle > golangci-lint.out
-      - name: Unit Test 
-        run: go test ./ -coverprofile="coverage.out" -covermode=count -json > report.json
-      - name: SonarCloud Scan
-        uses: SonarSource/sonarcloud-github-action@master
+      - run: make test
+
+  sonarCloudTrigger:
+    needs: build
+    name: SonarCloud Trigger
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone Repository
+        uses: actions/checkout@master
+      - name: Analyze with SonarCloud
+        uses: sonarsource/sonarcloud-github-action@v2
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+  integrationTest:
+    needs: build
+    name: Integration Test
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo Should run integration tests.
+
+      # - name: Checkout
+      #   uses: actions/checkout@v2
+      #   with:
+      #     fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+      # - name: Setup GO lang
+      #   uses: actions/setup-go@v2
+      #   with:
+      #     go-version: '^1.15.6' 
+      # - name: golangci-lint
+      #   uses: golangci/golangci-lint-action@v2
+      #   with:
+      #     version: v1.33.0
+      # - name: Unit Test 
+      #   run: go test ./ -coverprofile="coverage.out" -covermode=count -json > report.json
+      # - name: SonarCloud Scan
+      #   uses: SonarSource/sonarcloud-github-action@master
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+      #     SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
