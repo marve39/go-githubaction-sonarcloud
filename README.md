@@ -1,3 +1,4 @@
+[![SonarCloud](https://sonarcloud.io/images/project_badges/sonarcloud-white.svg)](https://sonarcloud.io/dashboard?id=marve39_go-githubaction-sonarcloud) ![](https://github.com/marve39/go-githubaction-sonarcloud/workflows/Main%20Workflow/badge.svg)
 # go-githubaction-sonarcloud
 Sample for CI flow using github action and sonar cloud for go lang
 

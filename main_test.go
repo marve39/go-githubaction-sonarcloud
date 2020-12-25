@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -27,4 +28,9 @@ func TestHelloworldHandler(t *testing.T) {
 	if w.Body.String() != want {
 		t.Errorf("handler return wrong status code: got %v, want %v", w.Body.String(), want)
 	}
+}
+
+//TestMain Test main function
+func TestMain(t *testing.T) {
+	log.Printf("Tested")
 }
