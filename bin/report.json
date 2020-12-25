@@ -1,3 +1,0 @@
-{"Time":"2020-12-25T16:59:23.56833+07:00","Action":"output","Package":"github.com/marve39/go-githubaction-sonarcloud","Output":"signal: interrupt\n"}
-{"Time":"2020-12-25T16:59:23.569785+07:00","Action":"output","Package":"github.com/marve39/go-githubaction-sonarcloud","Output":"FAIL\tgithub.com/marve39/go-githubaction-sonarcloud\t0.185s\n"}
-{"Time":"2020-12-25T16:59:23.569825+07:00","Action":"fail","Package":"github.com/marve39/go-githubaction-sonarcloud","Elapsed":0.187}
