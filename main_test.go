@@ -33,6 +33,7 @@ func TestVersionHandler(t *testing.T) {
 	httpTest(t, "version", "dummy", VersionHandler)
 }
 
+//httpTest method for doing http test
 func httpTest(t *testing.T, url string, word string, handler func(http.ResponseWriter, *http.Request)) {
 	r := httptest.NewRequest("GET", fmt.Sprintf("/%s", url), nil)
 	w := httptest.NewRecorder()

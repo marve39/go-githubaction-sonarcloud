@@ -16,6 +16,7 @@ func main() {
 	startHTTPServer(false)
 }
 
+//startHTTPServer method to start http server
 func startHTTPServer(isTest bool) {
 	srv := &http.Server{Addr: ":8080"}
 	http.HandleFunc("/", HelloworldHandler)
@@ -38,8 +39,6 @@ func startHTTPServer(isTest bool) {
 		if srvErr := srv.Shutdown(context.Background()); srvErr != nil {
 			log.Fatal(srvErr)
 		}
-
-		//errs <- fmt.Errorf("%s", "Test Only")
 	}
 
 	log.Print("ListenAndServe: ", <-errs)
