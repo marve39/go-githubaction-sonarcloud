@@ -10,3 +10,6 @@ check-lint:
 	golangci-lint run
 sonar-version:
 	cat version.txt| awk '{print "\nsonar.projectVersion="$$1}' >> sonar-project.properties
+generate-changelog:
+	go get -u github.com/git-chglog/git-chglog/cmd/git-chglog 
+	
