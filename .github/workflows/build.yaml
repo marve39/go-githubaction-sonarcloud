@@ -22,6 +22,10 @@ jobs:
         uses: actions/setup-go@v2
         with:
           go-version: '^1.15.6' 
+      - name: golangci-lint
+        uses: golangci/golangci-lint-action@v2
+        with:
+          version: v1.33.0
       - name: Lint Test 
         run: golangci-lint run ./ --verbose --no-config --out-format checkstyle > golangci-lint.out
       - name: Unit Test 
