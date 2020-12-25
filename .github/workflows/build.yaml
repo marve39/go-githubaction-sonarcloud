@@ -11,7 +11,7 @@ on:
       - '**.md'
 
 jobs:
-  build: 
+  code-scanner: 
     name: Compile and Test
     runs-on: ubuntu-latest
     steps:
@@ -23,29 +23,12 @@ jobs:
         uses: actions/setup-go@v2
         with:
           go-version: '^1.15.6' 
-      - name: golangci-lint
+      - name: Lint Test
         uses: golangci/golangci-lint-action@v2
         with:
           version: v1.33.0
-      - run: make test
-      - name: Archive code coverage results
-        uses: actions/upload-artifact@v2
-        with:
-          name: code-coverage-report
-          path: bin
-
-  sonarCloudTrigger:
-    needs: build
-    name: SonarCloud Trigger
-    runs-on: ubuntu-latest
-    steps:
-      - name: Clone Repository
-        uses: actions/checkout@master
-      - name: Download code coverage results
-        uses: actions/download-artifact@v2
-        with:
-          name: code-coverage-report
-          path: bin
+      - name: Whitebox Test
+        run: make test
       - name: Analyze with SonarCloud
         uses: sonarsource/sonarcloud-github-action@master
         env:
