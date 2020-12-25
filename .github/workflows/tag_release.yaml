@@ -16,8 +16,8 @@ jobs:
               #get version name from version.txt
               run: |
                   versionName=`cat version.txt`
-                  export VERSION_NAME=$versionName
-                  echo "::set-env name=VERSION_NAME::$VERSION_NAME"
+                  echo "VERSION_NAME=$versionName" >> $GITHUB_ENV
+
             - name: Extract release notes
               id: extract_release_notes
               uses: ffurrer2/extract-release-notes@v1
