@@ -8,3 +8,5 @@ get-dep:
 	go get -v -t -d ./
 check-lint:
 	golangci-lint run
+sonar-version:
+	cat version.txt| awk '{print "\nsonar.projectVersion="$$1}' >> sonar-project.properties

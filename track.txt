@@ -1,1 +1,1 @@
-pipeline-v1
+release-1.0.0
