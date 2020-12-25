@@ -17,6 +17,7 @@ func TestStartHTTPServer(t *testing.T) {
 
 //TestHelloworldHandler Test Handler for hello world
 func TestHelloworldHandler(t *testing.T) {
+	http.DefaultServeMux = new(http.ServeMux)
 	httpTest(t, testingWord, testingWord, HelloworldHandler)
 }
 
@@ -28,6 +29,7 @@ func TestMain(t *testing.T) {
 
 //TestVersionHandler Test version handler
 func TestVersionHandler(t *testing.T) {
+	http.DefaultServeMux = new(http.ServeMux)
 	httpTest(t, "version", "dummy", VersionHandler)
 }
 

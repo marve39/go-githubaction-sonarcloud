@@ -1,10 +1,14 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
+	"os"
+	"os/signal"
+	"syscall"
 )
 
 //main main method
@@ -13,14 +17,30 @@ func main() {
 }
 
 func startHTTPServer(isTest bool) {
-	if !isTest {
-		http.HandleFunc("/", HelloworldHandler)
-		http.HandleFunc("/version", VersionHandler)
-		err := http.ListenAndServe(":8080", nil)
-		if err != nil {
-			log.Fatal("ListenAndServe: ", err)
-		}
+	srv := &http.Server{Addr: ":8080"}
+	http.HandleFunc("/", HelloworldHandler)
+	http.HandleFunc("/version", VersionHandler)
+
+	errs := make(chan error)
+
+	go func() {
+		c := make(chan os.Signal)
+		signal.Notify(c, syscall.SIGINT, syscall.SIGTERM)
+		errs <- fmt.Errorf("%s", <-c)
+	}()
+
+	go func() {
+		errs <- srv.ListenAndServe()
+	}()
+
+	if isTest {
+		log.Println("Test")
+		srv.Shutdown(context.Background())
+
+		//errs <- fmt.Errorf("%s", "Test Only")
 	}
+
+	log.Print("ListenAndServe: ", <-errs)
 }
 
 //HelloworldHandler HelloWorld net/http handler
