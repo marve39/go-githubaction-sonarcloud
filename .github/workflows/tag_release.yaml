@@ -17,11 +17,6 @@ jobs:
               run: |
                   versionName=`cat version.txt`
                   echo "VERSION_NAME=$versionName" >> $GITHUB_ENV
-            - name: Build Changelog
-              id: github_release
-              uses: mikepenz/release-changelog-builder-action@main
-              env:
-                GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
             - name: Create Release
               id: create_release
               uses: actions/create-release@v1
@@ -30,7 +25,7 @@ jobs:
               with:
                 tag_name: ${{ env.VERSION_NAME }}
                 release_name: v${{ env.VERSION_NAME }}
-                body: ${{steps.github_release.outputs.changelog}}
+                body_path: CHANGELOG.md
                 draft: false
                 prerelease: false
             # - name: Slack notify
