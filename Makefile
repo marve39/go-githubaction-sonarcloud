@@ -6,3 +6,5 @@ test:
 	go test -v ./  -coverprofile="bin/coverage.out" -covermode=count -json > bin/report.json
 get-dep:
 	go get -v -t -d ./
+check-lint:
+	golangci-lint run

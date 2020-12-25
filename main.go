@@ -24,7 +24,7 @@ func startHTTPServer(isTest bool) {
 	errs := make(chan error)
 
 	go func() {
-		c := make(chan os.Signal)
+		c := make(chan os.Signal, 1)
 		signal.Notify(c, syscall.SIGINT, syscall.SIGTERM)
 		errs <- fmt.Errorf("%s", <-c)
 	}()
@@ -35,7 +35,9 @@ func startHTTPServer(isTest bool) {
 
 	if isTest {
 		log.Println("Test")
-		srv.Shutdown(context.Background())
+		if srvErr := srv.Shutdown(context.Background()); srvErr != nil {
+			log.Fatal(srvErr)
+		}
 
 		//errs <- fmt.Errorf("%s", "Test Only")
 	}
