@@ -2,7 +2,7 @@
 Sample for CI flow using github action and sonar cloud for go lang
 
 Release Pipeline : 
-- Code Scanner (Code security scan, Code test coverage) -> SonarCloud
+- Code Scanner (Lint scanner, Code depedency scanner, Code security scan, Code test coverage) -> SonarCloud
 - Unit Test -> SonarCloud
 - Auto Tagging Release
 

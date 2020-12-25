@@ -1,18 +1,31 @@
-name: Build
+name: build-test
 on:
   push:
     branches:
       - master
+    paths-ignore:
+      - '**.md'
   pull_request:
     types: [opened, synchronize, reopened]
+    paths-ignore:
+      - '**.md'
 jobs:
-  sonarcloud:
-    name: SonarCloud
+  codeScanner:
+    name: codeScanner
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout
+        uses: actions/checkout@v2
         with:
           fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+      - name: Setup GO lang
+        uses: actions/setup-go@v2
+          with:
+            go-version: '^1.15.6' 
+      - name: Lint Test 
+        run: golangci-lint run ./ --verbose --no-config --out-format checkstyle > golangci-lint.out
+      - name: Unit Test 
+        run: go test ./ -coverprofile="coverage.out" -covermode=count -json > report.json
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@master
         env:
