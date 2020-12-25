@@ -2,32 +2,36 @@ name: build
 on:
   push:
     branches:
-      - master
+      - main
     paths-ignore:
-      - '**.md'
+      - "**.md"
   pull_request:
     types: [opened, synchronize, reopened]
     paths-ignore:
-      - '**.md'
+      - "**.md"
 jobs:
-  code-scanner: 
+  code-scanner:
     name: Compile and Test
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v2
         with:
-          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+          fetch-depth: 0 # Shallow clones should be disabled for a better relevancy of analysis
       - name: Setup go
         uses: actions/setup-go@v2
         with:
-          go-version: '^1.15.6' 
+          go-version: "^1.15.6"
+      - name: Get dependencies
+        run: make go-dep
       - name: Lint Test
         uses: golangci/golangci-lint-action@v2
         with:
           version: v1.33.0
       - name: Whitebox Test
         run: make test
+      - name: Build
+        run: make build
       - name: Analyze with SonarCloud
         uses: sonarsource/sonarcloud-github-action@master
         env:

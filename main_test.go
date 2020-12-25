@@ -10,11 +10,31 @@ import (
 
 const testingWord = "hello"
 
+//TestStartHTTPServer Test HTTPServer
+func TestStartHTTPServer(t *testing.T) {
+	startHTTPServer(true)
+}
+
 //TestHelloworldHandler Test Handler for hello world
 func TestHelloworldHandler(t *testing.T) {
-	r := httptest.NewRequest("GET", fmt.Sprintf("/%s", testingWord), nil)
+	httpTest(t, testingWord, testingWord, HelloworldHandler)
+}
+
+//TestMain Test main function
+func TestMain(t *testing.T) {
+	go main()
+	log.Printf("Tested")
+}
+
+//TestVersionHandler Test version handler
+func TestVersionHandler(t *testing.T) {
+	httpTest(t, "version", "dummy", VersionHandler)
+}
+
+func httpTest(t *testing.T, url string, word string, handler func(http.ResponseWriter, *http.Request)) {
+	r := httptest.NewRequest("GET", fmt.Sprintf("/%s", url), nil)
 	w := httptest.NewRecorder()
-	h := http.HandlerFunc(HelloworldHandler)
+	h := http.HandlerFunc(handler)
 
 	h.ServeHTTP(w, r)
 
@@ -24,14 +44,8 @@ func TestHelloworldHandler(t *testing.T) {
 	}
 
 	// check HTTP response body
-	want := testingWord
+	want := word
 	if w.Body.String() != want {
 		t.Errorf("handler return wrong status code: got %v, want %v", w.Body.String(), want)
 	}
-}
-
-//TestMain Test main function
-func TestMain(t *testing.T) {
-	go main()
-	log.Printf("Tested")
 }

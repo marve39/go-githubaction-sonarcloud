@@ -15,3 +15,5 @@ Build Pipeline :
 
 Deploy Pipeline : 
 - Deploy Image -> Docker
+
+Reference : https://riggaroo.dev/using-github-actions-to-automate-our-release-process/
